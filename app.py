@@ -9,7 +9,7 @@ from models.movieList import *
 
 def initialize_db():
     with db:
-        db.create_tables([MovieList, MovieListItem], safe=True)
+        db.create_tables([MovieList, MovieListItem, Watched], safe=True)
 
 
 class Application:

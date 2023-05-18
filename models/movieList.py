@@ -3,28 +3,35 @@ from peewee import *
 db = SqliteDatabase('MovieNight.db')
 
 
-class MovieList(Model):
-    guild = IntegerField(primary_key=True)
-
+class BaseModel(Model):
     class Meta:
         database = db
 
 
-class MovieListItem(Model):
+class MovieList(BaseModel):
+    guild = IntegerField(primary_key=True)
+    library_channel_id = IntegerField()
+
+
+class MovieListItem(BaseModel):
+    id = AutoField()
     tmdb_id = IntegerField()
     name = CharField()
-    movie_list = ForeignKeyField(MovieList, backref='movie_list_item', default=None)
+    guild = ForeignKeyField(MovieList, backref='movie_list_item')
 
     class Meta:
-        database = db
-        primary_key = CompositeKey('tmdb_id', 'movie_list')
+        indexes = (
+            (('tmdb_id', 'guild'), True),
+        )
 
 
-class Watched(Model):
-    guild = ForeignKeyField(MovieList, backref='watched', default=None)
-    movie = ForeignKeyField(MovieListItem, backref='watched', default=None)
+class Watched(BaseModel):
+    id = AutoField()
+    guild = ForeignKeyField(MovieList, backref='watched')
+    movie = ForeignKeyField(MovieListItem, backref='watched')
     user = IntegerField()
 
     class Meta:
-        database = db
-        primary_key = CompositeKey('guild', 'movie', 'user')
+        indexes = (
+            (('guild', 'movie', 'user'), True),
+        )
