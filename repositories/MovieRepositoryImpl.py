@@ -1,4 +1,3 @@
-import abc
 from models.movieList import MovieList, MovieListItem
 from data.MovieListItemData import MovieListItemData
 from data.MovieListData import MovieListData

@@ -1,8 +1,9 @@
 from dataclasses import dataclass
+from typing import Optional
 
 
 @dataclass
 class MovieListItemData:
     tmdb_id: int
-    name: str
+    name: Optional[str]
     guild: int

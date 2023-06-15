@@ -3,18 +3,22 @@ import os
 import boto3
 from botocore.exceptions import ClientError
 
+class MissingEnviormentVariable(Exception):
+    pass
 
-class Parameter:
+class ParamManager:
     def __init__(self, prefix="GPT"):
         load_dotenv('.env')
         self.ssm = boto3.client("ssm")
         self.prefix = prefix
 
-    def get_parameter(self, name, from_environment=True):
+    def get_parameter(self, name, from_environment=True) -> str:
         if from_environment:
             value = os.environ.get(name)
             if value is not None:
                 return value
+            else:
+                raise MissingEnviormentVariable(f"Parameter {name} not found in environment variables.")
 
         try:
             response = self.ssm.get_parameter(
@@ -26,4 +30,4 @@ class Parameter:
                 print(f"Parameter {name} not found in AWS SSM.")
             else:
                 print(f"Error: {e}")
-            return None
+            raise MissingEnviormentVariable(f"Parameter {name} not found in AWS SSM.") 

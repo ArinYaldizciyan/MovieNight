@@ -1,9 +1,10 @@
 from util import GenreUtil, DateUtil
-from data.MovieEmbedData import MovieEmbedData
+from data.MovieData import MovieData
+from interactions import EmbedFooter
 import interactions
 
 
-def create_embed(d: MovieEmbedData):
+def create_embed(d: MovieData):
     readable = GenreUtil.readable_genre(d.genres)
     genre_list = readable[0]
     genre_string = readable[1]
@@ -33,8 +34,7 @@ def create_embed(d: MovieEmbedData):
         title=d.title,
         description=d.description,
         color=genre_colors[genre_list[0]],
-        footer=d.tmdb_id
-
+        footer=EmbedFooter(str(d.tmdb_id))
     )
     embed.set_thumbnail(d.thumbnail_url)
     embed.add_field(name="IMDB", value = "https://imdb.com/title/"+d.imdb_id, inline= False)

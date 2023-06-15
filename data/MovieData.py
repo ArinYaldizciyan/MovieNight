@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class MovieEmbedData:
+class MovieData:
     title: str
     description: str
     release_date: str
