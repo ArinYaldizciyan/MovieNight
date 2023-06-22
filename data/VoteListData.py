@@ -3,8 +3,7 @@ from typing import Optional
 
 
 @dataclass
-class MovieListItemData:
+class VoteListData:
     id: Optional[int]
-    tmdb_id: int
-    name: Optional[str]
     guild: int
+    created_by_user: int

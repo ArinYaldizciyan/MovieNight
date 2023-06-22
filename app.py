@@ -10,7 +10,7 @@ class Application:
 
     def initialize_db(self):
         with db:
-            db.create_tables([MovieList, MovieListItem, Watched], safe=True)
+            db.create_tables([model for model in BaseModel.__subclasses__()], safe=True)
             self.db = SqliteDatabase('movienight.db')
 
     def __init__(self):

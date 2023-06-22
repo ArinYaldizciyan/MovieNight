@@ -1,20 +1,29 @@
 import requests
-
+from typing import Optional, List
 
 class YTSRepository:
     #Todo: Add all dependencies into constructor
     def __init__(self):
         self.api_url = "https://yts.mx/api/v2/list_movies.json"
+        self.detail_api_url = "https://yts.mx/api/v2/movie_details.json"
 
     def search(self, imdb_id: str):
         route_url = self.api_url
         params = {
-            "query": imdb_id
+            "query_term": imdb_id,
+            "limit": 10
         }
         response = requests.get(route_url, params=params).json()
         return response
 
-    def get_torrents(self, imdb_id: str):
+    def get(self, imdb_id: str) -> Optional[List]:
+        route_url = self.detail_api_url
+        params = {
+            "imdb_id": imdb_id,
+            "with_images": False,
+            "with_cast": False
+        }
+        response = requests.get(route_url, params=params).json()
         trackers = [
             "udp://open.demonii.com:1337/announce",
             "udp://tracker.openbittorrent.com:80",
@@ -25,9 +34,8 @@ class YTSRepository:
             "udp://tracker.leechers-paradise.org:6969",
 
         ]
-        response = self.search(imdb_id)
 
-        torrent_list = response["data"]["movies"][0]["torrents"]
+        torrent_list = response["data"]["movie"]["torrents"]
         torrent_urls = []
         for torrent in torrent_list:
             torrent_urls.append(torrent["url"])

@@ -11,3 +11,4 @@ class MovieData:
     imdb_id: str
     tmdb_id: int
     thumbnail_url: str
+    director: str

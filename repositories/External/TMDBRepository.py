@@ -24,7 +24,22 @@ class TMDBRepository():
             "include_adult": True
         }
         response = requests.get(route_url, params=params).json()
-        print(response)
+        return response
+
+    def get_credits(self, tmdb_id: int):
+        route_url = self.api_url + "/movie/" + str(tmdb_id) + "/credits"
+        params = {
+            "api_key": self.api_key
+        }
+        response = requests.get(route_url, params=params).json()
+        return response
+
+    def get_watch_sources(self, tmdb_id: str):
+        route_url = self.api_url + "/movie/" + str(tmdb_id) + "/watch/providers"
+        params = {
+            "api_key": self.api_key
+        }
+        response = requests.get(route_url, params=params).json()
         return response
 
     def get_info(self, tmdb_id: int):
@@ -35,6 +50,5 @@ class TMDBRepository():
             "api_key": self.api_key
         }
         response = requests.get(route_url, params=params).json()
-        print(response)
         return response
 

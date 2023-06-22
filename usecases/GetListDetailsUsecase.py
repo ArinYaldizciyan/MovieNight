@@ -5,11 +5,12 @@ from data.MovieListItemData import MovieListItemData
 from data.MovieListData import MovieListData
 
 
-class AddToMovieListUsecase:
+class GetListDetailsUsecase:
 
     @inject
     def __init__(self, movie_repository: MovieRepository):
         self.movie_repository = movie_repository
 
-    def execute(self, movie_data: MovieListItemData) -> MovieListItemData:
-        return self.movie_repository.add_to_list(movie_data)
+    def execute(self, movie_data: MovieListItemData, movie_list_data: MovieListData):
+        pass
+    
