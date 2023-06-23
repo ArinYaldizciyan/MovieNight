@@ -40,7 +40,9 @@ def create_about_movie_embed(d: MovieData) -> interactions.Embed:
     embed.set_footer(text=str(d.tmdb_id) + "|" + str(d.imdb_id), icon_url=None)
     embed.set_thumbnail(d.thumbnail_url)
     embed.add_field(name="Director", value=d.director, inline=True)
+    embed.add_field(name="IMDB Rating", value=str(d.imdb_rating), inline=True)
     embed.add_field(name="IMDB", value="https://imdb.com/title/" + d.imdb_id, inline=False)
+    embed.add_field(name="Awards", value=d.awards_info, inline=False)
     embed.add_field(name="Release Date", value=DateUtil.readable_date(d.release_date), inline=True)
     embed.add_field(name="Listed Genre", value=genre_string, inline=True)
 

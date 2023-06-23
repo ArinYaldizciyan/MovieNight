@@ -14,9 +14,9 @@ class MovieAutocompleteUsecase:
     async def execute(self, search: Union[str, None]) -> AutocompleteMovieData:
         movies = []
         if search:
-            raw_movies = self.tmdb_repository.search(query=search)["results"]
+            raw_movies = (await self.tmdb_repository.search(query=search))["results"]
             for movie in raw_movies:
-                filtered_title = movie["original_title"][:20]
+                filtered_title = movie["original_title"][:40]
                 description_len = 90-len(filtered_title)
                 name = filtered_title+": "+movie["overview"][:description_len]+"..."
                 movies.append({

@@ -66,6 +66,7 @@ class DiscordController(Extension):
     async def on_ready(self):
         print("Ready")
         for guild in self.bot.guilds:
+            # Todo: Handle case where channel was deleted by owner. Should be able to recreate it.
             if self.get_movie_list.execute(guild=guild.id) is None:
                 print(guild.name)
                 try:
@@ -106,6 +107,9 @@ class DiscordController(Extension):
 
         link_text = f"[JustWatch CA]({provider_link})\n" if provider_link else ""
         channel = await ctx.guild.fetch_channel(library_channel)
+        if not channel:
+            print("Channel not found")
+            return
         message_embed.add_field(name="Stream Providers",
                                 value=link_text + providers_formatted,
                                 inline=False)
@@ -191,7 +195,6 @@ class DiscordController(Extension):
         print("Ranking: " + str(ranking) + " for movie: " + str(vote_list_item_id) + " by user: " + str(ctx.user.id))
         await ctx.defer(edit_origin=True)
 
-    # Todo: Validate ranking responses. Do not allow duplicates, make sure all movies are ranked
     async def user_finished_ranking_callback(self, ctx: ComponentContext, rankings: List):
         valid_list = len([item for item in rankings if item is not None]) == len(set(rankings))
         if valid_list:

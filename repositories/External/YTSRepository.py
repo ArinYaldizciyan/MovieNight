@@ -1,29 +1,31 @@
-import requests
+from .ExternalRepository import ExternalRepository
 from typing import Optional, List
 
-class YTSRepository:
-    #Todo: Add all dependencies into constructor
+
+class YTSRepository(ExternalRepository):
+    # Todo: Add all dependencies into constructor
     def __init__(self):
+        super().__init__()
         self.api_url = "https://yts.mx/api/v2/list_movies.json"
         self.detail_api_url = "https://yts.mx/api/v2/movie_details.json"
 
-    def search(self, imdb_id: str):
+    async def search(self, imdb_id: str):
         route_url = self.api_url
         params = {
             "query_term": imdb_id,
             "limit": 10
         }
-        response = requests.get(route_url, params=params).json()
+        response = await self._fetch(route_url, params=params)
         return response
 
-    def get(self, imdb_id: str) -> Optional[List]:
+    async def get(self, imdb_id: str) -> Optional[List]:
         route_url = self.detail_api_url
         params = {
             "imdb_id": imdb_id,
-            "with_images": False,
-            "with_cast": False
+            "with_images": "false",
+            "with_cast": "false"
         }
-        response = requests.get(route_url, params=params).json()
+        response = await self._fetch(route_url, params=params)
         trackers = [
             "udp://open.demonii.com:1337/announce",
             "udp://tracker.openbittorrent.com:80",
@@ -42,10 +44,8 @@ class YTSRepository:
 
         return torrent_list
 
-    def get_magnet_links(self, imdb_id: str):
-
+    async def get_magnet_links(self, imdb_id: str):
         # magnet:?xt=urn:btih:578261664906C00F43603D9BFBED8B84207B410B&dn=Batman+Begins&tr=udp://open.demonii.com:1337/announce&tr=udp://tracker.openbittorrent.com:80
         torrent_list = self.get_torrents(imdb_id)
         magnet_list = []
         # for torrent in torrent_list:
-

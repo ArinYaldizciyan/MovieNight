@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Optional
 
 
 @dataclass
@@ -12,3 +13,5 @@ class MovieData:
     tmdb_id: int
     thumbnail_url: str
     director: str
+    awards_info: Optional[str]
+    imdb_rating: Optional[float]
